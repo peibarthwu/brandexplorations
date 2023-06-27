@@ -92,6 +92,7 @@ animate();
 var params = {
   color: "#000000",
   fog_depth: 300,
+  fog_near: 0,
 };
 var gui = new dat.GUI();
 var folder = gui.addFolder("Parameters");
@@ -106,4 +107,11 @@ folder
   .step(1)
   .onChange(function (value) {
     scene.fog.far = value;
+  });
+
+folder
+  .add(params, "fog_near", -100, 300)
+  .step(1)
+  .onChange(function (value) {
+    scene.fog.near = value;
   });
