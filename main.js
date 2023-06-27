@@ -21,6 +21,7 @@ document.getElementById("three").appendChild(renderer.domElement);
 
 //svg
 const loader = new SVGLoader();
+let group;
 
 const extrudeSettings = {
   steps: 2,
@@ -35,7 +36,7 @@ loader.load(
   // called when the resource is loaded
   function (data) {
     const paths = data.paths;
-    const group = new THREE.Group();
+    group = new THREE.Group();
     const width = 0;
     for (let i = 0; i < paths.length; i++) {
       const path = paths[i];
@@ -90,16 +91,23 @@ function animate() {
 animate();
 
 var params = {
-  color: "#000000",
+  bg_color: "#ffffff",
+  shape_color: "#000000",
   fog_depth: 300,
   fog_near: 0,
 };
 var gui = new dat.GUI();
 var folder = gui.addFolder("Parameters");
 
-folder.addColor(params, "color").onChange(function () {
-  scene.background = new THREE.Color(params.color);
-  scene.fog.color = new THREE.Color(params.color);
+folder.addColor(params, "bg_color").onChange(function () {
+  scene.background = new THREE.Color(params.bg_color);
+  scene.fog.color = new THREE.Color(params.bg_color);
+});
+
+folder.addColor(params, "shape_color").onChange(function () {
+  for (let i = 0; i < group.children.length; i++) {
+    group.children[i].material.color = new THREE.Color(params.shape_color);
+  }
 });
 
 folder
